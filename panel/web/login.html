@@ -1,0 +1,37 @@
+<!doctype html><html lang=fa dir=rtl><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>ورود | CS:S v34 Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800;900&display=swap" rel=stylesheet>
+<style>
+:root{--bg:#07060d;--panel:#0d0a1a;--panel2:#12101c;--purple:#7c3aed;--purple2:#8b5cf6;--blue:#3b82f6;--blue2:#60a5fa;--lime:#a3e635;--text:#eef2ff;--muted:#9ca3af;--border:rgba(255,255,255,.08);--grad:linear-gradient(90deg,#7c3aed,#3b82f6);--glow:0 10px 30px rgba(124,58,237,.4)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:Vazirmatn,"Segoe UI",Tahoma,sans-serif;display:flex;align-items:center;justify-content:center;overflow:hidden}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(900px 500px at 50% -10%,rgba(124,58,237,.22),transparent 60%),radial-gradient(700px 400px at 80% 110%,rgba(59,130,246,.12),transparent 60%);pointer-events:none}
+body::after{content:"";position:fixed;inset:0;background-image:radial-gradient(rgba(139,92,246,.10) 1px,transparent 1px);background-size:26px 26px;opacity:.5;pointer-events:none}
+.card{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid var(--border);border-radius:28px;padding:44px 40px;width:380px;text-align:center;backdrop-filter:blur(10px);box-shadow:0 30px 80px rgba(0,0,0,.6);z-index:2}
+.card::before{content:"";position:absolute;top:16px;left:16px;width:26px;height:26px;border-top:2px solid #a855f7;border-left:2px solid #a855f7;border-radius:8px 0 0 0;opacity:.8}
+.card::after{content:"";position:absolute;bottom:16px;right:16px;width:26px;height:26px;border-bottom:2px solid #3b82f6;border-right:2px solid #3b82f6;border-radius:0 0 8px 0;opacity:.8}
+.shield{width:74px;height:74px;margin:0 auto 18px;border-radius:22px;background:var(--panel2);border:1px solid rgba(139,92,246,.4);display:flex;align-items:center;justify-content:center;font-size:34px;box-shadow:0 0 40px rgba(124,58,237,.45),inset 0 0 20px rgba(124,58,237,.15)}
+h1{margin:0;font-size:24px;font-weight:900}
+h1 span{background:linear-gradient(90deg,#93c5fd,#a78bfa,#e879f9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--muted);font-size:13px;margin:8px 0 26px}
+input{width:100%;padding:13px 16px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-family:inherit;font-size:14px;outline:none;transition:.2s}
+input:focus{border-color:rgba(139,92,246,.6);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+button{width:100%;margin-top:16px;padding:13px;border-radius:14px;border:0;background:var(--grad);color:#fff;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;box-shadow:var(--glow);transition:.2s}
+button:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(124,58,237,.55)}
+.err{color:#f87171;font-size:13px;margin-top:12px;display:none}
+.hint{color:var(--muted);font-size:11px;margin-top:18px}
+</style></head><body>
+<div class=card>
+ <div class=shield>🛡</div>
+ <h1>CS:<span>S v34</span></h1>
+ <div class=sub>پنل مدیریت سرور کانتر</div>
+ <form method=post action=/login>
+  <input type=password name=pass placeholder="رمز عبور" autofocus>
+  <button>ورود به پنل</button>
+ </form>
+ <div class=err id=err>رمز اشتباه است</div>
+ <div class=hint>دسترسی فقط برای ادمین سرور</div>
+</div>
+<script>if(location.search.includes('e=1'))document.getElementById('err').style.display='block'</script>
+</body></html>

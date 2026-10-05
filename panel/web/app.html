@@ -1,0 +1,268 @@
+<!doctype html><html lang=fa dir=rtl><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>CS:S v34 | پنل مدیریت</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800;900&display=swap" rel=stylesheet>
+<style>
+:root{--bg:#07060d;--panel:#0d0a1a;--panel2:#12101c;--purple:#7c3aed;--purple2:#8b5cf6;--blue:#3b82f6;--blue2:#60a5fa;--lime:#a3e635;--red:#ef4444;--text:#eef2ff;--muted:#9ca3af;--border:rgba(255,255,255,.08);--grad:linear-gradient(90deg,#7c3aed,#3b82f6);--glow:0 10px 30px rgba(124,58,237,.35)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Vazirmatn,"Segoe UI",Tahoma,sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(900px 500px at 80% -10%,rgba(124,58,237,.18),transparent 60%),radial-gradient(700px 400px at 10% 110%,rgba(59,130,246,.10),transparent 60%);pointer-events:none;z-index:0}
+
+/* ===== sidebar ===== */
+.side{position:fixed;top:0;right:0;bottom:0;width:250px;background:linear-gradient(180deg,rgba(18,16,28,.95),rgba(13,10,26,.95));border-left:1px solid var(--border);display:flex;flex-direction:column;z-index:10;backdrop-filter:blur(12px)}
+.brand{padding:26px 20px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.shield{width:46px;height:46px;border-radius:14px;background:var(--panel2);border:1px solid rgba(139,92,246,.4);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 24px rgba(124,58,237,.4);flex-shrink:0}
+.brand b{font-size:16px;font-weight:900;display:block}
+.brand b span{background:linear-gradient(90deg,#93c5fd,#a78bfa,#e879f9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand small{color:var(--muted);font-size:10px}
+nav{flex:1;padding:14px 12px;display:flex;flex-direction:column;gap:4px}
+nav button{width:100%;display:flex;align-items:center;gap:10px;background:transparent;border:1px solid transparent;color:var(--muted);border-radius:14px;padding:11px 14px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:.18s;text-align:right}
+nav button:hover{background:rgba(255,255,255,.04);color:var(--text)}
+nav button.on{background:linear-gradient(90deg,rgba(124,58,237,.25),rgba(59,130,246,.12));border-color:rgba(139,92,246,.4);color:#fff;box-shadow:inset 0 0 20px rgba(124,58,237,.12)}
+nav button i{font-style:normal;font-size:17px;width:22px;text-align:center}
+.side-foot{padding:14px;border-top:1px solid var(--border)}
+.side-foot a{text-decoration:none}
+.btn-ghost{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:1px solid rgba(255,255,255,.14);color:var(--text);border-radius:14px;padding:10px;font-family:inherit;font-size:13px;cursor:pointer;transition:.18s}
+.btn-ghost:hover{border-color:rgba(239,68,68,.6);color:#fca5a5}
+
+/* ===== main ===== */
+main{margin-right:250px;padding:26px 30px 60px;position:relative;z-index:1}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px}
+.topbar h2{margin:0;font-size:20px;font-weight:800}
+.topbar .live{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px var(--lime);animation:pulse 2s infinite}
+.dot.off{background:var(--red);box-shadow:0 0 12px var(--red)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
+.stat{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));border:1px solid var(--border);border-radius:20px;padding:18px 20px;overflow:hidden}
+.stat::before{content:"";position:absolute;top:0;left:0;width:20px;height:20px;border-top:2px solid rgba(168,85,247,.55);border-left:2px solid rgba(168,85,247,.55);border-radius:8px 0 0 0}
+.stat .lbl{color:var(--muted);font-size:12px;margin-bottom:6px}
+.stat .val{font-size:24px;font-weight:900;background:linear-gradient(90deg,#93c5fd,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat .val.g{background:linear-gradient(90deg,#a3e635,#4ade80);-webkit-background-clip:text;background-clip:text}
+.stat .val.o{background:linear-gradient(90deg,#fbbf24,#f87171);-webkit-background-clip:text;background-clip:text}
+
+.card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012));border:1px solid var(--border);border-radius:22px;padding:20px 22px;margin-bottom:18px;backdrop-filter:blur(8px)}
+.card h3{margin:0 0 14px;font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px}
+.card h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(139,92,246,.4),transparent)}
+
+table{width:100%;border-collapse:collapse}
+th{padding:8px 10px;color:var(--muted);font-size:11px;font-weight:500;text-align:right;border-bottom:1px solid var(--border)}
+td{padding:9px 10px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.04)}
+tr:hover td{background:rgba(255,255,255,.025)}
+.pname{display:flex;align-items:center;gap:8px}
+.pnum{background:rgba(124,58,237,.2);border:1px solid rgba(139,92,246,.3);border-radius:8px;padding:2px 8px;font-size:11px;color:#c4b5fd;min-width:28px;text-align:center}
+
+input[type=text],input[type=password]{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);border-radius:12px;padding:10px 14px;font-family:inherit;font-size:13px;outline:none;transition:.2s}
+input:focus{border-color:rgba(139,92,246,.6);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
+
+.btn{border:0;border-radius:12px;padding:9px 18px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;transition:.18s;color:#fff}
+.btn:hover{transform:translateY(-1px)}
+.btn-p{background:var(--grad);box-shadow:var(--glow)}
+.btn-p:hover{box-shadow:0 12px 32px rgba(124,58,237,.5)}
+.btn-r{background:linear-gradient(90deg,#ef4444,#b91c1c);box-shadow:0 8px 20px rgba(239,68,68,.25)}
+.btn-g{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text)}
+.btn-g:hover{border-color:rgba(139,92,246,.5);background:rgba(124,58,237,.12)}
+
+.grid{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.map-btn{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);border-radius:12px;padding:8px 14px;font-family:inherit;font-size:12px;cursor:pointer;transition:.15s;font-weight:500}
+.map-btn:hover{border-color:rgba(139,92,246,.6);background:rgba(124,58,237,.15);transform:translateY(-1px)}
+
+.gm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.gm-card{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));border:1px solid var(--border);border-radius:18px;padding:20px 16px;text-align:center;cursor:pointer;transition:.2s;overflow:hidden}
+.gm-card:hover{border-color:rgba(139,92,246,.6);transform:translateY(-3px);box-shadow:0 14px 34px rgba(124,58,237,.25)}
+.gm-card .ico{font-size:30px;margin-bottom:8px}
+.gm-card .nm{font-weight:800;font-size:15px;margin-bottom:4px}
+.gm-card .ds{color:var(--muted);font-size:11px;line-height:1.7}
+.gm-card.active{border-color:rgba(163,230,53,.5);box-shadow:0 0 24px rgba(163,230,53,.12)}
+
+pre{background:rgba(0,0,0,.45);border:1px solid var(--border);border-radius:14px;padding:14px;overflow:auto;max-height:300px;font-size:12px;white-space:pre-wrap;direction:ltr;text-align:left;font-family:ui-monospace,Consolas,monospace;color:#a5f3a5;line-height:1.6;margin:0}
+
+.pill{display:inline-flex;align-items:center;gap:7px;background:rgba(124,58,237,.15);border:1px solid rgba(139,92,246,.3);border-radius:999px;padding:6px 14px;font-size:12px;font-weight:600;color:#ddd6fe}
+.pill.g{background:rgba(163,230,53,.12);border-color:rgba(163,230,53,.35);color:#d9f99d}
+
+.info-tbl td:first-child{color:var(--muted);font-size:12px}
+.info-tbl td:last-child{font-weight:700}
+.hint{color:var(--muted);font-size:11px;margin-top:10px;line-height:1.8}
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(139,92,246,.35),transparent);margin:16px 0}
+
+/* toast */
+#toasts{position:fixed;bottom:20px;left:20px;z-index:99;display:flex;flex-direction:column;gap:8px}
+.toast{background:linear-gradient(90deg,rgba(124,58,237,.95),rgba(59,130,246,.95));color:#fff;padding:12px 20px;border-radius:14px;font-size:13px;font-weight:600;box-shadow:0 10px 30px rgba(124,58,237,.4);animation:tin .3s ease;max-width:320px}
+@keyframes tin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+@media(max-width:860px){.side{width:70px}.brand b,.brand small,nav button span,.side-foot span{display:none}main{margin-right:70px;padding:16px}}
+</style></head><body>
+
+<aside class=side>
+ <div class=brand><div class=shield>🛡</div><div><b>CS:<span>S v34</span></b><small>پنل مدیریت سرور</small></div></div>
+ <nav>
+  <button class="on" onclick="tab('dash',this)"><i>📊</i><span>داشبورد</span></button>
+  <button onclick="tab('maps',this)"><i>🗺</i><span>مپ‌ها</span></button>
+  <button onclick="tab('gm',this)"><i>🎮</i><span>گیم‌مود</span></button>
+   <button onclick="tab('adm',this)"><i>👑</i><span>ادمین‌ها</span></button>
+  <button onclick="tab('bans',this)"><i>🚫</i><span>بن‌ها</span></button>
+  <button onclick="tab('chat',this)"><i>💬</i><span>چت زنده</span></button>
+  <button onclick="tab('stats',this)"><i>📊</i><span>آمار</span></button>
+  <button onclick="tab('set',this)"><i>⚙️</i><span>تنظیمات</span></button>
+ </nav>
+ <div class=side-foot><a href="/logout"><button class="btn-ghost"><span>خروج</span> 🚪</button></a></div>
+</aside>
+
+<main>
+ <div class=topbar>
+  <h2 id=ttl>داشبورد</h2>
+  <div class=live><span class="dot" id=sdot></span><span id=sstat>در حال بررسی...</span><span style="margin-right:14px">|</span><span>Tickrate 100</span></div>
+ </div>
+
+ <!-- dashboard -->
+ <div id=dash>
+  <div class=cards>
+   <div class=stat><div class=lbl>بازیکنان آنلاین</div><div class="val g" id=st_players>...</div></div>
+   <div class=stat><div class=lbl>مپ فعلی</div><div class=val id=st_map>...</div></div>
+   <div class=stat><div class=lbl>آی‌پی بازی</div><div class="val o" style="font-size:15px;padding-top:6px">147.185.221.215:19303</div></div>
+   <div class=stat><div class=lbl>گیم‌مود فعال</div><div class=val id=st_gm style="font-size:17px;padding-top:4px">...</div></div>
+  </div>
+  <div class=card>
+   <h3>👥 بازیکن‌ها <button class="btn btn-g" style="margin-right:auto;font-size:11px;padding:5px 12px" onclick="refresh()">🔄 رفرش</button></h3>
+   <div id=plist></div>
+  </div>
+  <div class=card><h3>🖥 لاگ سرور</h3><pre id=plog>...</pre></div>
+ </div>
+
+ <!-- maps -->
+ <div id=maps style="display:none">
+  <div class=card><h3>🗺 تعویض مپ</h3><div id=maplist class=grid></div>
+  <p class=hint>مپ انتخاب کن تا سرور فوراً عوض شود. بازیکنان آنلاین قطع و وصل می‌شوند.</p></div>
+ </div>
+
+ <!-- gamemodes -->
+ <div id=gm style="display:none">
+  <div class=card><h3>🎮 گیم‌مود</h3>
+   <div class=gm-grid>
+    <div class="gm-card" onclick="gm('public',this)"><div class=ico>🌐</div><div class=nm>پابلیک</div><div class=ds>کلاسیک — راند بی‌انتها<br>فرندلی‌فایر خاموش</div></div>
+    <div class="gm-card" onclick="gm('comp',this)"><div class=ico>🏆</div><div class=nm>کامپتیو</div><div class=ds>۳۰ راند — پول اول ۸۰۰<br>راند ۱:۴۵ — C4: ۳۵ ثانیه</div></div>
+    <div class="gm-card" onclick="gm('dm',this)"><div class=ico>💀</div><div class=nm>دث‌مچ</div><div class=ds>ری‌اسپاون ۳ ثانیه<br>زره کامل — فریز صفر</div></div>
+    <div class="gm-card" onclick="gm('gungame',this)"><div class=ico>🔫</div><div class=nm>گان‌گیم</div><div class=ds>با هر کشتن<br>اسلحه عوض می‌شود</div></div>
+    <div class="gm-card" onclick="gm('sniper',this)"><div class=ico>🎯</div><div class=nm>اسنایپر</div><div class=ds>فقط AWP + چاقو<br>ری‌اسپاون سریع</div></div>
+    <div class="gm-card" onclick="gm('knifesmoke',this)"><div class=ico>🔪</div><div class=nm>چاقو دودی</div><div class=ds>فقط چاقو + دودی<br>کمپ و فان</div></div>
+   </div>
+   <p class=hint>بعد از انتخاب گیم‌مود، از تب «مپ‌ها» یک مپ بگیر تا تنظیمات کامل اعمال شود.</p>
+  </div>
+ </div>
+
+ <!-- admins -->
+ <div id=adm style="display:none">
+  <div class=card><h3>👑 ادمین‌های سرور</h3>
+   <div class=grid style="margin-bottom:14px">
+    <input type=text id=aname placeholder="اسم در بازی یا STEAM_0:0:..." style="flex:1;min-width:180px">
+    <input type=text id=aflags placeholder="flags" value="99:z" style="width:110px">
+    <button class="btn btn-p" onclick="addadm()">➕ افزودن</button>
+   </div>
+   <div id=admlist></div>
+   <p class=hint>اسم بازیکن باید دقیقاً همان چیزی باشد که در بازی می‌بینی (مثال: ali). دسترسی کامل: 99:z</p>
+  </div>
+ </div>
+
+ <!-- bans -->
+ <div id=bans style="display:none">
+  <div class=card><h3>🚫 بن‌ها و گگ/مت‌ها</h3>
+   <div id=banslist></div>
+   <p class=hint>بن‌ها با removeid برداشته می‌شوند و از فایل سرور هم حذف می‌شوند.</p>
+  </div>
+ </div>
+
+ <!-- chat -->
+ <div id=chat style="display:none">
+  <div class=card><h3>💬 چت زنده بازیکنان <button class="btn btn-g" style="margin-right:auto;font-size:11px;padding:5px 12px" onclick="loadChat()">🔄 رفرش</button></h3>
+   <div id=chatbox style="max-height:420px;overflow:auto;display:flex;flex-direction:column;gap:6px"></div>
+  </div>
+ </div>
+
+ <!-- stats -->
+ <div id=stats style="display:none">
+  <div class=card><h3>📊 آمار بازیکنان — برترین‌ها</h3>
+   <div id=statsbox></div>
+  </div>
+ </div>
+
+ <!-- settings -->
+ <div id=set style="display:none">
+  <div class=card><h3>⚙️ اطلاعات سرور</h3>
+   <table class=info-tbl>
+    <tr><td>آدرس بازی (ClientMod)</td><td style="color:#a3e635">147.185.221.215:19303</td></tr>
+    <tr><td>تیک‌ریت</td><td>100</td></tr>
+    <tr><td>ظرفیت</td><td>32 نفر</td></tr>
+    <tr><td>آنتی‌چیت</td><td>SMAC Ultra</td></tr>
+    <tr><td>شاپ درون‌بازی</td><td>!shop</td></tr>
+    <tr><td>انتخاب چاقو</td><td>!knife</td></tr>
+    <tr><td>فست‌دانلود</td><td style="color:#a3e635">فعال ✓</td></tr>
+   </table>
+   <div class=divider></div>
+   <button class="btn btn-r" onclick="if(confirm('ری‌استارت شود؟')){fetch('/api/restart',{method:'POST'});toast('در حال ری‌استارت سرور...')}">🔄 ری‌استارت سرور</button>
+  </div>
+ </div>
+</main>
+
+<div id=toasts></div>
+
+<script>
+var cur='dash', gmName='';
+function toast(m){var d=document.createElement('div');d.className='toast';d.textContent=m;document.getElementById('toasts').appendChild(d);setTimeout(function(){d.remove()},3200)}
+function tab(id,btn){document.querySelectorAll('main>div').forEach(function(d){d.style.display='none'});document.getElementById(id).style.display='block';
+ document.querySelectorAll('nav button').forEach(function(b){b.classList.remove('on')});if(btn)btn.classList.add('on');
+ var t={dash:'داشبورد',maps:'مپ‌ها',gm:'گیم‌مود',adm:'ادمین‌ها',bans:'بن‌ها',chat:'چت زنده',stats:'آمار',set:'تنظیمات'};document.getElementById('ttl').textContent=t[id]||'';
+ cur=id;if(id==='maps')loadMaps();if(id==='adm')loadAdm();if(id==='bans')loadBans();if(id==='chat')loadChat();if(id==='stats')loadStats();}
+function J(u,o){return fetch(u,o).then(function(r){return r.json()})}
+function post(u,o){return J(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)})}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function refresh(){J('/api/status').then(function(s){
+ document.getElementById('st_players').textContent=s.count+' / '+s.max;
+ document.getElementById('st_map').textContent=s.map;
+ var act=s.server_active;
+ document.getElementById('sdot').className='dot'+(act?'':' off');
+ document.getElementById('sstat').textContent=act?'سرور آنلاین':'سرور آفلاین';
+ var h='<table><tr><th>#</th><th>بازیکن</th><th></th></tr>';
+ s.players.forEach(function(p,i){h+='<tr><td><span class=pnum>'+(i+1)+'</span></td><td><div class=pname>👤 '+esc(p.name)+'</div></td><td><div style="display:flex;gap:6px"><button class="btn btn-g" style="padding:4px 12px;font-size:11px" onclick="kick('+p.uid+')">کیک</button><button class="btn btn-r" style="padding:4px 12px;font-size:11px" onclick="ban('+p.uid+')">بن</button></div></td></tr>';});
+ document.getElementById('plist').innerHTML=s.players.length?h+'</table>':'<div class=hint style="text-align:center;padding:18px">فعلاً بازیکنی آنلاین نیست</div>';
+ document.getElementById('plog').textContent=s.raw.slice(-2500);
+});}
+function kick(uid){post('/api/kick',{uid:uid}).then(function(){toast('بازیکن کیک شد');setTimeout(refresh,800)})}
+function ban(uid){var m=prompt('مدت بن به دقیقه — 0 یعنی دائمی','30');if(m===null)return;
+ post('/api/ban',{uid:uid,minutes:m}).then(function(){toast('بازیکن بن شد');setTimeout(refresh,800)});}
+function loadMaps(){J('/api/maps').then(function(m){var h='';
+ m.maps.forEach(function(mp){h+='<button class="map-btn" data-map="'+mp+'" onclick="chgmap(this.dataset.map)">'+mp+'</button>';});
+ document.getElementById('maplist').innerHTML=h;});}
+function chgmap(mp){post('/api/map',{map:mp}).then(function(){toast('مپ عوض شد: '+mp);refresh()})}
+function gm(mode,el){post('/api/gm',{mode:mode}).then(function(){gmName=mode;
+ document.querySelectorAll('.gm-card').forEach(function(c){c.classList.remove('active')});
+ if(el)el.classList.add('active');
+ var n={public:'پابلیک',comp:'کامپتیو',dm:'دث‌مچ',gungame:'گان‌گیم',sniper:'اسنایپر',knifesmoke:'چاقو دودی'};toast('گیم‌مود تنظیم شد: '+n[mode]+' — حالا مپ انتخاب کن');}).catch(function(){toast('خطا در تنظیم گیم‌مود')});}
+function loadAdm(){J('/api/admins').then(function(a){var h='<table><tr><th>ادمین</th><th></th></tr>';
+ a.admins.forEach(function(x){if(!x.trim()||x.trim().startsWith('//'))return;var nm=x.split('"')[1]||x;
+  h+='<tr><td>'+esc(x)+'</td><td><button class="btn btn-r" style="padding:4px 12px;font-size:11px" data-x="'+esc(nm).replace(/"/g,'&quot;')+'" onclick="deladm(this.dataset.x)">حذف</button></td></tr>';});
+ document.getElementById('admlist').innerHTML=h+'</table>';});}
+function addadm(){var a=document.getElementById('aname').value.trim();var f=document.getElementById('aflags').value.trim()||'99:z';
+ if(!a)return;post('/api/admin/add',{auth:a,flags:f}).then(function(){document.getElementById('aname').value='';toast('ادمین اضافه شد');loadAdm()})}
+function deladm(x){if(!confirm('حذف شود؟'))return;post('/api/admin/del',{auth:x}).then(function(){toast('ادمین حذف شد');loadAdm})}
+var adminNames=[], seenAdmins={};
+function loadBans(){J('/api/bans').then(function(b){var h='<table><tr><th>نوع</th><th>شناسه</th><th>مدت</th><th>دلیل</th><th></th></tr>';
+ b.bans.forEach(function(x){var dur=x.perm?'دائمی':(x.minutes+' دقیقه');
+  h+='<tr><td>'+esc(x.kind)+'</td><td dir="ltr" style="text-align:left">'+esc(x.auth)+'</td><td>'+dur+'</td><td>'+esc(x.reason||'-')+'</td><td><button class="btn btn-g" style="padding:4px 12px;font-size:11px" data-a="'+esc(x.auth)+'" data-k="'+esc(x.kind)+'" onclick="unban(this.dataset.a,this.dataset.k)">برداشتن</button></td></tr>';});
+ document.getElementById('banslist').innerHTML=b.bans.length?h+'</table>':'<div class=hint style="text-align:center;padding:16px">فعلاً بن یا گگ فعالی نیست</div>';});}
+function unban(a,k){if(!confirm('برداشته شود؟'))return;post('/api/unban',{auth:a,kind:k}).then(function(){toast('برداشته شد');loadBans()})}
+function loadChat(){J('/api/chat').then(function(c){var h='';
+ c.lines.forEach(function(l){h+='<div dir="ltr" style="text-align:left;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:12px">'+esc(l)+'</div>';});
+ var el=document.getElementById('chatbox');el.innerHTML=h||'<div class=hint style="text-align:center;padding:16px">هنوز چتی ثبت نشده</div>';el.scrollTop=el.scrollHeight;});}
+function loadStats(){J('/api/stats').then(function(s){var h='<table><tr><th>#</th><th>بازیکن</th><th>کیل</th><th>مرگ</th><th>KD</th><th>هددشات</th><th>اسنایپر</th></tr>';
+ s.rows.forEach(function(r,i){var kd=r.deaths>0?(r.kills/r.deaths).toFixed(2):r.kills;
+  var m=i==0?'🥇':(i==1?'🥈':(i==2?'🥉':''));
+  h+='<tr><td>'+m+(i+1)+'</td><td>'+esc(r.name)+'</td><td style="color:#a3e635;font-weight:700">'+r.kills+'</td><td>'+r.deaths+'</td><td>'+kd+'</td><td>'+r.hs+'</td><td>'+r.sniper+'</td></tr>';});
+ document.getElementById('statsbox').innerHTML=s.rows.length?h+'</table>':'<div class=hint style="text-align:center;padding:16px">هنوز آماری ثبت نشده — بازی کنید!</div>';});}
+J('/api/admins').then(function(a){a.admins.forEach(function(x){var nm=x.split('"')[1]||x;if(nm&&!nm.startsWith('//'))adminNames.push(nm.toLowerCase())})});
+var _oldRefresh=refresh;
+refresh=function(){_oldRefresh();J('/api/status').then(function(s){s.players.forEach(function(p){
+ var nm=p.name.toLowerCase();
+ adminNames.forEach(function(a){if(nm.indexOf(a.toLowerCase())>-1&&!seenAdmins[a]){seenAdmins[a]=true;toast('👑 ادمین '+p.name+' آنلاین شد!')}});});})};
+refresh();setInterval(refresh,5000);loadMaps();loadAdm();
+</script></body></html>
