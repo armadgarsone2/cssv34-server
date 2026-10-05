@@ -16,6 +16,7 @@ BANS_FILE = CWD + '/cstrike/banned_userids.cfg'
 GAGS_FILE = CWD + '/cstrike/addons/sourcemod/data/gags.txt'
 RANKS_FILE = CWD + '/cstrike/addons/sourcemod/data/ranks.txt'
 CHAT_FILE = CWD + '/cstrike/addons/sourcemod/data/chat_log.txt'
+ADMIN_LOG = CWD + '/cstrike/addons/sourcemod/data/admin_log.txt'
 MODE_FILE = CWD + '/current_mode.txt'
 
 def get_mode():
@@ -56,6 +57,13 @@ def get_bans():
 def get_chat(tail=80):
     try:
         lines = open(CHAT_FILE, errors='ignore').read().splitlines()
+        return lines[-tail:]
+    except Exception:
+        return []
+
+def get_adminlog(tail=30):
+    try:
+        lines = open(ADMIN_LOG, errors='ignore').read().splitlines()
         return lines[-tail:]
     except Exception:
         return []
@@ -190,6 +198,8 @@ class Handler(BaseHTTPRequestHandler):
             self._json({'bans': get_bans()}); return
         if path == '/api/chat':
             self._json({'lines': get_chat()}); return
+        if path == '/api/adminlog':
+            self._json({'lines': get_adminlog()}); return
         if path == '/api/stats':
             self._json({'rows': get_stats()}); return
         self.send_response(404); self.end_headers()

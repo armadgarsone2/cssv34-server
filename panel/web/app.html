@@ -104,6 +104,7 @@ pre{background:rgba(0,0,0,.45);border:1px solid var(--border);border-radius:14px
   <button onclick="tab('bans',this)"><i>🚫</i><span>بن‌ها</span></button>
   <button onclick="tab('chat',this)"><i>💬</i><span>چت زنده</span></button>
   <button onclick="tab('stats',this)"><i>📊</i><span>آمار</span></button>
+  <button onclick="tab('alog',this)"><i>📋</i><span>لاگ ادمین</span></button>
   <button onclick="tab('set',this)"><i>⚙️</i><span>تنظیمات</span></button>
  </nav>
  <div class=side-foot><a href="/logout"><button class="btn-ghost"><span>خروج</span> 🚪</button></a></div>
@@ -186,7 +187,14 @@ pre{background:rgba(0,0,0,.45);border:1px solid var(--border);border-radius:14px
   </div>
  </div>
 
- <!-- settings -->
+ <!-- admin log -->
+<div id=alog style="display:none">
+ <div class=card><h3>📋 لاگ اکشن‌های ادمین <button class="btn btn-g" style="margin-right:auto;font-size:11px;padding:5px 12px" onclick="loadALog()">🔄 رفرش</button></h3>
+  <div id=alogbox style="max-height:420px;overflow:auto;display:flex;flex-direction:column;gap:6px"></div>
+ </div>
+</div>
+
+<!-- settings -->
  <div id=set style="display:none">
   <div class=card><h3>⚙️ اطلاعات سرور</h3>
    <table class=info-tbl>
@@ -211,8 +219,8 @@ var cur='dash', gmName='';
 function toast(m){var d=document.createElement('div');d.className='toast';d.textContent=m;document.getElementById('toasts').appendChild(d);setTimeout(function(){d.remove()},3200)}
 function tab(id,btn){document.querySelectorAll('main>div').forEach(function(d){d.style.display='none'});document.getElementById(id).style.display='block';
  document.querySelectorAll('nav button').forEach(function(b){b.classList.remove('on')});if(btn)btn.classList.add('on');
- var t={dash:'داشبورد',maps:'مپ‌ها',gm:'گیم‌مود',adm:'ادمین‌ها',bans:'بن‌ها',chat:'چت زنده',stats:'آمار',set:'تنظیمات'};document.getElementById('ttl').textContent=t[id]||'';
- cur=id;if(id==='maps')loadMaps();if(id==='adm')loadAdm();if(id==='bans')loadBans();if(id==='chat')loadChat();if(id==='stats')loadStats();}
+ var t={dash:'داشبورد',maps:'مپ‌ها',gm:'گیم‌مود',adm:'ادمین‌ها',bans:'بن‌ها',chat:'چت زنده',stats:'آمار',alog:'لاگ ادمین',set:'تنظیمات'};document.getElementById('ttl').textContent=t[id]||'';
+ cur=id;if(id==='maps')loadMaps();if(id==='adm')loadAdm();if(id==='bans')loadBans();if(id==='chat')loadChat();if(id==='stats')loadStats();if(id==='alog')loadALog();}
 function J(u,o){return fetch(u,o).then(function(r){return r.json()})}
 function post(u,o){return J(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)})}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
@@ -263,6 +271,9 @@ function unban(a,k){if(!confirm('برداشته شود؟'))return;post('/api/unb
 function loadChat(){J('/api/chat').then(function(c){var h='';
  c.lines.forEach(function(l){h+='<div dir="ltr" style="text-align:left;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:12px">'+esc(l)+'</div>';});
  var el=document.getElementById('chatbox');el.innerHTML=h||'<div class=hint style="text-align:center;padding:16px">هنوز چتی ثبت نشده</div>';el.scrollTop=el.scrollHeight;});}
+function loadALog(){J('/api/adminlog').then(function(c){var h='';
+ c.lines.forEach(function(l){h+='<div dir="ltr" style="text-align:left;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:12px">'+esc(l)+'</div>';});
+ var el=document.getElementById('alogbox');el.innerHTML=h||'<div class=hint style="text-align:center;padding:16px">هنوز اکشنی ثبت نشده</div>';el.scrollTop=el.scrollHeight;});}
 function loadStats(){J('/api/stats').then(function(s){var h='<table><tr><th>#</th><th>بازیکن</th><th>کیل</th><th>مرگ</th><th>KD</th><th>هددشات</th><th>اسنایپر</th></tr>';
  s.rows.forEach(function(r,i){var kd=r.deaths>0?(r.kills/r.deaths).toFixed(2):r.kills;
   var m=i==0?'🥇':(i==1?'🥈':(i==2?'🥉':''));
