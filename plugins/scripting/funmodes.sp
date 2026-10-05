@@ -34,9 +34,10 @@ public Action T_Give(Handle timer, any uid) {
     bool knife = GetConVarBool(g_cvKnife);
     if (!sniper && !knife) return Plugin_Stop;
 
-    // strip primary + secondary + grenades
+    // strip weapons — keep slot 2 (knife)
     int slot;
     for (slot = 0; slot <= 5; slot++) {
+        if (slot == 2) continue;
         int ent = GetPlayerWeaponSlot(client, slot);
         if (ent != -1) {
             RemovePlayerItem(client, ent);

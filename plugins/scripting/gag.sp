@@ -57,8 +57,11 @@ public void OnClientPutInServer(int client) {
 public Action OnClientSayCommand(int client, const char[] command, const char[] sArgs) {
     if (client > 0 && (g_type[client] & 1)) {
         int now = GetTime();
-        if (g_expire[client] == 0 || g_expire[client] > now)
+        if (g_expire[client] == 0 || g_expire[client] > now) {
+            // commands still allowed for gagged players
+            if (sArgs[0] == '!' || sArgs[0] == '/') return Plugin_Continue;
             return Plugin_Handled;
+        }
     }
     return Plugin_Continue;
 }

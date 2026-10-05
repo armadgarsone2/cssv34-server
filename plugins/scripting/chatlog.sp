@@ -11,17 +11,14 @@ public Plugin myinfo = {
 };
 
 public void OnPluginStart() {
-    HookEvent("player_say", Ev_Say);
+    // OnClientSayCommand is reliable on CS:S v34; player_say event is not
 }
 
-public void Ev_Say(Event event, const char[] name, bool dontBroadcast) {
-    int client = GetClientOfUserId(event.GetInt("userid"));
-    if (client <= 0 || !IsClientInGame(client)) return;
-    char text[192];
-    event.GetString("text", text, sizeof(text));
-    int len = strlen(text);
-    if (len < 1) return;
-    if (text[0] == '!' || text[0] == '/') return;
+public Action OnClientSayCommand(int client, const char[] command, const char[] sArgs) {
+    if (client <= 0 || IsFakeClient(client)) return Plugin_Continue;
+    int len = strlen(sArgs);
+    if (len < 1) return Plugin_Continue;
+    if (sArgs[0] == '!' || sArgs[0] == '/') return Plugin_Continue;
 
     char pname[64];
     GetClientName(client, pname, sizeof(pname));
@@ -29,9 +26,10 @@ public void Ev_Say(Event event, const char[] name, bool dontBroadcast) {
     FormatTime(stamp, sizeof(stamp), "%H:%M");
     File f = OpenFile(CHAT_FILE, "a");
     if (f != null) {
-        WriteFileLine(f, "[%s] %s : %s", stamp, pname, text);
+        WriteFileLine(f, "[%s] %s : %s", stamp, pname, sArgs);
         delete f;
     }
+    return Plugin_Continue;
 }
 
 public void OnClientPutInServer(int client) {

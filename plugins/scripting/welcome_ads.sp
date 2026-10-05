@@ -9,9 +9,9 @@ public Plugin myinfo = {
 };
 
 new g_adIndex = 0;
-#define NUM_ADS 6
+#define NUM_ADS 8
 
-new String:g_ads[6][256];
+new String:g_ads[8][256];
 
 public OnPluginStart() {
     strcopy(g_ads[0], 256, "\x04[AD]\x01 آی‌پی بازی: \x03147.185.221.215:19303\x01 - همین الان وصل شو!");
@@ -20,6 +20,8 @@ public OnPluginStart() {
     strcopy(g_ads[3], 256, "\x04[AD]\x01 با هر کشتن \x0325\x01 سکه می‌گیری!");
     strcopy(g_ads[4], 256, "\x04[AD]\x01 اسکین گان و نارنجک برای \x03همه بازیکنان\x01 رایگان است!");
     strcopy(g_ads[5], 256, "\x04[AD]\x01 برای دیدن قوانین: \x04!rules");
+    strcopy(g_ads[6], 256, "\x04[AD]\x01 رتبه خودت رو ببین: \x04!rank\x01 | برترین‌ها: \x04!top");
+    strcopy(g_ads[7], 256, "\x04[AD]\x01 رتبه تفکیکی: \x04!top sniper\x01 | \x04!top rifle\x01 | \x04!top knife");
     RegConsoleCmd("sm_rules", Cmd_Rules, "Server rules");
     CreateTimer(300.0, T_Ad, _, TIMER_REPEAT);
 }
@@ -37,7 +39,7 @@ public Action:T_Welcome(Handle:timer, any:uid) {
     PrintToChat(client, " \x01آی‌پی بازی: \x04147.185.221.215:19303");
     PrintToChat(client, " \x01اسکین گان و نارنجک برای همه فعال است!");
     PrintToChat(client, " \x01خرید اسکین شخص: \x04!shop\x01 | انتخاب چاقو: \x04!knife");
-    PrintToChat(client, " \x01قوانین: \x04!rules");
+    PrintToChat(client, " \x01رتبه: \x04!rank\x01 | برترین‌ها: \x04!top\x01 | قوانین: \x04!rules");
     PrintToChat(client, " \x04*+*+*+*+*+*+*+*+*+*");
     return Plugin_Stop;
 }

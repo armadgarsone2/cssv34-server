@@ -67,6 +67,7 @@ int FindOrCreate(int client) {
 }
 
 public void OnClientPutInServer(int client) {
+    if (IsFakeClient(client)) { g_idx[client] = -1; return; }
     g_idx[client] = FindOrCreate(client);
 }
 
@@ -77,6 +78,8 @@ public void Ev_Death(Event event, const char[] name, bool dontBroadcast) {
     int vi = FindOrCreate(victim);
     if (vi >= 0) a_d[vi]++;
     if (attacker <= 0 || attacker == victim || !IsClientInGame(attacker) || IsFakeClient(attacker)) return;
+    // teamkill — not a real kill
+    if (GetClientTeam(attacker) == GetClientTeam(victim)) return;
     char w[32];
     event.GetString("weapon", w, sizeof(w));
     int ai = FindOrCreate(attacker);

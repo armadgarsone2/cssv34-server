@@ -241,9 +241,12 @@ ApplyItems(client) {
 }
 
 public Ev_Death(Handle:event, const String:name[], bool:dontBroadcast) {
+    new victim = GetClientOfUserId(GetEventInt(event, "userid"));
     new attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
-    if (attacker > 0 && IsClientInGame(attacker)) {
-        g_credits[attacker] += 25;
-        if (g_credits[attacker] > 99999) g_credits[attacker] = 99999;
-    }
+    if (attacker <= 0 || attacker == victim || !IsClientInGame(attacker)) return;
+    if (IsFakeClient(attacker)) return;
+    // teamkill — no credits
+    if (victim > 0 && IsClientInGame(victim) && GetClientTeam(attacker) == GetClientTeam(victim)) return;
+    g_credits[attacker] += 25;
+    if (g_credits[attacker] > 99999) g_credits[attacker] = 99999;
 }
