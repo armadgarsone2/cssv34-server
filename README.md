@@ -1,11 +1,6 @@
 <div align="center">
 
-<div align="center">
-
 **🌐 Languages:** [English](README.md) · [فارسی](README.fa.md) · [中文](README.zh-CN.md) · [العربية](README.ar.md) · [Русский](README.ru.md)
-
-</div>
-
 
 # 🎮 Sefidan CSS v34 Server
 
