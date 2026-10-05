@@ -18,6 +18,21 @@ It takes 2 seconds and helps others discover it.
 
 ---
 
+## 🌐 Our Live Server
+
+| | |
+|---|---|
+| 🎮 **Connect** | `147.185.221.215:19303` |
+| 🖥 **Engine** | CS:S v34 (ClientMod) |
+| ⚡ **Tickrate** | 100 |
+| 👥 **Slots** | 32 |
+| 🛡 **Anti-Cheat** | SMAC Ultra |
+| ⏰ **Nightly Restart** | 05:00 Tehran time |
+
+> **No VPN needed** — connect directly via console: `connect 147.185.221.215:19303`
+
+---
+
 ## ✨ Features
 
 ### 🎮 Gamemodes
