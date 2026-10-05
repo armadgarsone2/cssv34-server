@@ -17,7 +17,7 @@ int e_count = 0;
 
 public Plugin myinfo = {
     name = "Gag Mute",
-    author = "Ali",
+    author = "Sefidan",
     description = "Admin gag/mute with persistence",
     version = "1.0",
 };

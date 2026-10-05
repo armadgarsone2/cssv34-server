@@ -5,7 +5,7 @@
 
 public Plugin myinfo = {
     name = "Fun Modes",
-    author = "Ali",
+    author = "Sefidan",
     description = "Sniper mode + Knife/Smoke mode",
     version = "1.0",
 };

@@ -1,182 +1,178 @@
+<div align="center">
+
 # 🎮 Sefidan CSS v34 Server
 
-> **Counter-Strike: Source v34** — سرور کامل با پلاگین‌های سفارشی، پنل مدیریت وب، و سیستم‌های پیشرفته بازی
+### A complete Counter-Strike: Source v34 server — plugins, web panel, gamemodes & more
 
-[![](https://img.shields.io/badge/SourceMod-1.7.3-blue)](https://www.sourcemod.net/)
-[![](https://img.shields.io/badge/Engine-v34-orange)]()
-[![](https://img.shields.io/badge/AI-Built-purple)]()
-[![](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/armadgarsone2/cssv34-server?style=social)](https://github.com/armadgarsone2/cssv34-server/stargazers)
+[![SourceMod](https://img.shields.io/badge/SourceMod-1.7.3-blue)](https://www.sourcemod.net/)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+[![Made with AI](https://img.shields.io/badge/Made%20with-AI-purple)](#-built-with-ai)
 
----
+⭐ **If you find this project useful, please give it a star!** ⭐
+It takes 2 seconds and helps others discover it.
 
-## ✨ امکانات
+[![GitHub stars](https://img.shields.io/github/stars/armadgarsone2/cssv34-server?label=Star%20this%20repo&style=for-the-badge&color=yellow)](https://github.com/armadgarsone2/cssv34-server/stargazers)
 
-### 🎮 گیم‌مودها
-| حالت | توضیح |
-|------|-------|
-| 🌐 پابلیک | کلاسیک — راند بی‌انتها |
-| 🏆 کامپتیو | ۳۰ راند، پول اول ۸۰۰، اقتصاد صعودی |
-| 💀 دث‌مچ | ری‌اسپاون ۳ ثانیه + زره کامل |
-| 🔫 گان‌گیم | با هر کشتن اسلحه عوض می‌شود |
-| 🎯 اسنایپر | فقط AWP + چاقو، ری‌اسپاون سریع |
-| 🔪 چاقو دودی | فقط چاقو + دودی، کمپ و فان |
-
-### 🛠 پلاگین‌های سفارشی
-- **Shop Simple** — فروشگاه اسکین شخصی با اعمال در پایان راند
-- **Rank System** — رتبه‌بندی کلی + تفکیکی (اسنایپر/رایفل/کلت/چاقو)
-- **Gag Mute** — گگ/مت مدت‌دار با ماندگاری بعد از ری‌استارت
-- **Spawn Protect** — ۳ ثانیه محافظت ری‌اسپاون با HUD شمارش معکوس
-- **AFK Manager** — انتقال خودکار بی‌حرکت‌ها به تماشاگر
-- **Fun Modes** — حالت‌های اسنایپر و چاقو دودی
-- **Knife Selector** — انتخاب چاقو (M9/پروانه‌ای) per-player
-- **Welcome Ads** — خوش‌آمد + قوانین ۱۲ بندی + تبلیغات چرخشی
-- **Win Message** — پیام طلایی برد راند
-- **DM Respawn** — ری‌اسپاون سریع برای حالت دث‌مچ
-- **Chat Log** — لاگ چت + اعلام ورود ادمین
-
-### 📊 پنل مدیریت وب
-- داشبورد زنده (بازیکنان، مپ، وضعیت)
-- تعویض مپ + گیم‌مود
-- کیک/بن بازیکن
-- مدیریت ادمین‌ها
-- لیست بن‌ها + گگ/مت‌ها
-- چت زنده بازیکنان
-- آمار برترین‌ها
-- ری‌استارت سرور
-
-### ⚙️ زیرساخت
-- **فست‌دانلود** — HTTP خالص با bore tunnel
-- **SMAC** — آنتی‌چیت
-- **Tickrate 100** — روان
-- **Metamod + SourceMod** — پایه پلاگین‌ها
+</div>
 
 ---
 
-## 📁 ساختار پروژه
+## ✨ Features
+
+### 🎮 Gamemodes
+
+| Mode | Description |
+|------|-------------|
+| 🌐 **Public** | Classic — endless rounds, no friendly fire |
+| 🏆 **Competitive** | 30 rounds, $800 start money, 1:45 rounds, 35s C4 |
+| 💀 **Deathmatch** | 3s respawn, full armor, instant action |
+| 🔫 **GunGame** | Weapon upgrades with every kill |
+| 🎯 **Sniper** | AWP + knife only, fast respawn |
+| 🔪 **Knife+Smoke** | Knife and smokes only — pure skill |
+
+### 🛠 Custom Plugins (12)
+
+- **🛒 Simple Shop** — Buy personal skins with in-game credits
+- **📊 Rank System** — Overall + per-weapon-class rankings
+- **🔇 Gag/Mute** — Persistent text/voice mutes
+- **🛡 Spawn Protect** — 3s protection with HUD countdown
+- ** AFK Manager** — Auto-move idle players to spectators
+- **🎪 Fun Modes** — Sniper & Knife+Smoke modes
+- **🔪 Knife Selector** — Per-player knife choice (M9 / Butterfly)
+- **📢 Welcome & Ads** — Welcome message, rules, rotating ads
+- **🏆 Win Message** — Golden round-win announcement
+- **💀 DM Respawn** — Quick respawn for deathmatch modes
+- **💬 Chat Log** — Live chat logging + admin join announcements
+- **📋 Admin Log** — Every admin action recorded with timestamps
+
+### 📊 Web Admin Panel
+
+- Live dashboard (players, map, status, active gamemode)
+- Map & gamemode switching
+- Kick / ban players (temporary or permanent)
+- Admin management (add / remove)
+- Ban & gag lists with one-click removal
+- Live chat monitor
+- Player stats & leaderboards
+- Admin action log
+- Server restart button
+- Per-session cookie authentication
+
+### ⚙️ Infrastructure
+
+- **Fast Download** — HTTP tunnel (v34 engine has no TLS support)
+- **SMAC Anti-Cheat** — Multi-component protection
+- **Tickrate 100** — Smooth gameplay
+- **Metamod + SourceMod** — Plugin framework
+- **Auto Backup** — Plugin data backed up every 12 hours
+- **Nightly Restart** — Automatic restart at 05:00 with player warnings
+
+---
+
+## 📁 Project Structure
 
 ```
 ├── plugins/
-│   ├── scripting/          # کد منبع پلاگین‌ها (.sp)
-│   └── compiled/           # پلاگین‌های کامپایل‌شده (.smx)
+│   ├── scripting/          # SourcePawn source code (.sp)
+│   └── compiled/           # Compiled plugins (.smx)
 ├── configs/
-│   ├── gamemodes/          # تنظیمات هر گیم‌مود
-│   └── sourcemod/          # تنظیمات SourceMod
+│   ├── gamemodes/          # Gamemode config files
+│   └── sourcemod/          # SourceMod configs
 ├── panel/
-│   ├── panel.py            # پنل مدیریت وب (Python)
-│   └── web/                # رابط کاربری پنل
+│   ├── panel.py            # Web admin panel (Python)
+│   └── web/                # Panel UI (HTML/CSS/JS)
 ├── scripts/
-│   ├── fastdl_watch.py     # واچ‌داگ فست‌دانلود
-│   └── skinwatch.py        # واچ‌داگ اسکین‌ها
+│   ├── backup_plugin_data.sh   # Auto-backup script
+│   ├── nightly_restart.sh      # Nightly restart script
+│   └── fastdl_watch.py         # Fast download watchdog
 └── docs/
-    └── INSTALL.md          # راهنمای نصب
+    └── INSTALL.md          # Full installation guide
 ```
 
 ---
 
-## 🚀 نصب سریع
-
-### پیش‌نیازها
-- Linux (تست‌شده روی Ubuntu 22.04)
-- Python 3.8+
-- SourceMod 1.7.3
-- Metamod:Source
-
-### مراحل نصب
+## 🚀 Quick Start
 
 ```bash
-# 1. کلون کردن مخزن
-git clone https://github.com/your-username/cssv34-server.git
+# Clone
+git clone https://github.com/armadgarsone2/cssv34-server.git
 cd cssv34-server
 
-# 2. کپی پلاگین‌ها
+# Install plugins
 cp plugins/compiled/*.smx /path/to/cstrike/addons/sourcemod/plugins/
 
-# 3. کپی تنظیمات
+# Install configs
 cp configs/gamemodes/*.cfg /path/to/cstrike/cfg/gamemodes/
 cp configs/sourcemod/* /path/to/cstrike/addons/sourcemod/configs/
 
-# 4. نصب پنل
+# Install panel
 cp panel/panel.py /path/to/cssserver/
 cp -r panel/web /path/to/cssserver/
-chmod +x panel.py
 
-# 5. ری‌استارت سرور
+# Restart server
 systemctl restart css34
 ```
 
-راهنمای کامل: [docs/INSTALL.md](docs/INSTALL.md)
+📖 **Full guide:** [docs/INSTALL.md](docs/INSTALL.md)
 
 ---
 
-## 🎮 دستورات بازیکن
+## 🎮 Player Commands
 
-| دستور | توضیح |
-|-------|-------|
-| `!shop` | فروشگاه اسکین |
-| `!rank` | رتبه شما |
-| `!top` | برترین‌ها |
-| `!top sniper` | برترین اسنایپرها |
-| `!knife` | انتخاب چاقو |
-| `!rules` | قوانین سرور |
-| `!credits` | موجودی سکه |
-
----
-
-## 🛠 دستورات ادمین
-
-| دستور | توضیح |
-|-------|-------|
-| `sm_gag <player> [min] [reason]` | گگ متنی |
-| `sm_mute <player> [min]` | مت صوتی |
-| `sm_ungag / sm_unmute <player>` | برداشتن گگ/مت |
-| `sm_gaglist` | لیست گگ/مت‌ها |
-| `sm_dm 0/1` | فعال/غیرفعال دث‌مچ |
+| Command | Description |
+|---------|-------------|
+| `!shop` | Open the skin shop |
+| `!rank` | View your ranking |
+| `!top` | Top players (overall) |
+| `!top sniper` | Top AWP players |
+| `!top rifle` | Top rifle players |
+| `!top knife` | Top knife killers |
+| `!knife` | Choose your knife |
+| `!rules` | Server rules |
+| `!credits` | Check your balance |
 
 ---
 
-## 📸 اسکین‌های نصب‌شده
+## 🛠 Admin Commands
 
-### گان‌ها
-- AK-47 Neon / Hardened
-- AWP Creeper
-- Desert Eagle Gold
-- M4A1 NeoNoir
-
-### چاقوها
-- M9 Bayonet
-- Butterfly Knife
-
-### نارنجک‌ها
-- HE Grenade
-- Smoke Grenade
-- Flashbang
+| Command | Description |
+|---------|-------------|
+| `sm_gag <player> [min] [reason]` | Gag text chat |
+| `sm_mute <player> [min]` | Mute voice |
+| `sm_ungag / sm_unmute <player>` | Remove gag/mute |
+| `sm_gaglist` | List active gags |
+| `sm_dm 0/1` | Toggle deathmatch respawn |
+| `sm_adminlog` | Show recent admin actions |
 
 ---
 
-## 🤖 ساخته‌شده با هوش مصنوعی
+## 📸 Installed Skins
 
-این پروژه **صفر تا صد** با کمک هوش مصنوعی ساخته شده:
-- طراحی معماری سرور
-- کدنویسی پلاگین‌های SourcePawn
-- توسعه پنل مدیریت وب
-- تنظیمات گیم‌مودها
-- مستندسازی و راهنماها
+**Guns:** AK-47 Neon · AK-47 Hardened · AWP Creeper · Desert Eagle Gold · M4A1 NeoNoir
+**Knives:** M9 Bayonet · Butterfly Knife
+**Nades:** HE Grenade · Smoke Grenade · Flashbang
 
 ---
 
-## 📄 لایسنس
+## 🤝 Contributing
 
-این پروژه تحت لایسنس [MIT](LICENSE) منتشر شده است.
-
----
-
-## 🙏 قدردانی
-
-- [SourceMod](https://www.sourcemod.net/) — فریم‌ورک پلاگین
-- [Metamod:Source](https://www.metamodsource.net/) — لایه میانی
-- [SMAC](https://github.com/alliedmodders/smac) — آنتی‌چیت
-- [playit.gg](https://playit.gg/) — تونل UDP
+Feel free to open issues or submit pull requests!
 
 ---
 
-**ساخته‌شده با ❤️ و هوش مصنوعی | Sefidan CSS v34**
+<div align="center">
+
+### 🤖 Built with AI
+
+This entire project — architecture design, SourcePawn plugin development,
+web panel engineering, gamemode configuration, and documentation — was
+created from scratch with the assistance of artificial intelligence.
+
+---
+
+**⭐ Don't forget to star the repo if this helped you! ⭐**
+
+[![GitHub stars](https://img.shields.io/github/stars/armadgarsone2/cssv34-server?style=for-the-badge&color=yellow)](https://github.com/armadgarsone2/cssv34-server/stargazers)
+
+</div>

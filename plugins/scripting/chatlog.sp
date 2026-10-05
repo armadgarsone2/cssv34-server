@@ -5,7 +5,7 @@
 
 public Plugin myinfo = {
     name = "Chat Log + Admin Announce",
-    author = "Ali",
+    author = "Sefidan",
     description = "Logs chat for panel, announces admin joins",
     version = "1.0",
 };

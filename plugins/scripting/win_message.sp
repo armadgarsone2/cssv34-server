@@ -4,7 +4,7 @@
 
 public Plugin myinfo = {
     name = "Win Message",
-    author = "Ali",
+    author = "Sefidan",
     description = "Round-win message, left-side credit",
     version = "3.0",
 };

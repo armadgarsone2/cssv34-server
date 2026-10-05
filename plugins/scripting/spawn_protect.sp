@@ -9,7 +9,7 @@ Handle g_hud = null;
 
 public Plugin myinfo = {
     name = "Spawn Protect",
-    author = "Ali",
+    author = "Sefidan",
     description = "3 second spawn protection",
     version = "1.0",
 };

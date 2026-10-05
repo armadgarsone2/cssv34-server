@@ -5,7 +5,7 @@
 
 public Plugin myinfo = {
     name = "Knife Selector",
-    author = "Ali",
+    author = "Sefidan",
     description = "Per-player knife choice: default / M9 / Butterfly",
     version = "1.0",
 };

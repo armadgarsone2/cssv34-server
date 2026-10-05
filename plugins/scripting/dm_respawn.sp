@@ -5,7 +5,7 @@
 
 public Plugin myinfo = {
     name = "DM Respawn",
-    author = "Ali",
+    author = "Sefidan",
     description = "Deathmatch auto-respawn with armor",
     version = "1.0",
 };

@@ -7,7 +7,7 @@
 
 public Plugin myinfo = {
     name = "Simple Shop",
-    author = "Ali",
+    author = "Sefidan",
     description = "In-game shop v3: player skins only (gun skins are server default)",
     version = "3.0",
 };

@@ -11,7 +11,7 @@ int g_team[MAXPLAYERS+1];
 
 public Plugin myinfo = {
     name = "AFK Manager",
-    author = "Ali",
+    author = "Sefidan",
     description = "Move AFK players to spectator",
     version = "1.0",
 };

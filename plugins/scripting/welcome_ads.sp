@@ -3,7 +3,7 @@
 
 public Plugin myinfo = {
     name = "Welcome and Ads",
-    author = "Ali",
+    author = "Sefidan",
     description = "Welcome, rules and rotating ads",
     version = "1.0",
 };
@@ -14,7 +14,7 @@ new g_adIndex = 0;
 new String:g_ads[8][256];
 
 public OnPluginStart() {
-    strcopy(g_ads[0], 256, "\x04[AD]\x01 آی‌پی بازی: \x03147.185.221.215:19303\x01 - همین الان وصل شو!");
+    strcopy(g_ads[0], 256, "\x04[AD]\x01 آی‌پی بازی: \x03YOUR_SERVER_IP:27015\x01 - همین الان وصل شو!");
     strcopy(g_ads[1], 256, "\x04[AD]\x01 \x04!knife\x01 - چاقوی دلخواهت رو انتخاب کن (M9 / پروانه‌ای)");
     strcopy(g_ads[2], 256, "\x04[AD]\x01 \x04!shop\x01 - اسکین شخصی بخر، راند بعد اعمال می‌شود!");
     strcopy(g_ads[3], 256, "\x04[AD]\x01 با هر کشتن \x0325\x01 سکه می‌گیری!");
@@ -36,7 +36,7 @@ public Action:T_Welcome(Handle:timer, any:uid) {
     PrintToChat(client, " ");
     PrintToChat(client, " \x04*+*+*+*+*+*+*+*+*+*");
     PrintToChat(client, " \x03به سرور CS:S v34 خوش آمدید!");
-    PrintToChat(client, " \x01آی‌پی بازی: \x04147.185.221.215:19303");
+    PrintToChat(client, " \x01آی‌پی بازی: \x04YOUR_SERVER_IP:27015");
     PrintToChat(client, " \x01اسکین گان و نارنجک برای همه فعال است!");
     PrintToChat(client, " \x01خرید اسکین شخص: \x04!shop\x01 | انتخاب چاقو: \x04!knife");
     PrintToChat(client, " \x01رتبه: \x04!rank\x01 | برترین‌ها: \x04!top\x01 | قوانین: \x04!rules");

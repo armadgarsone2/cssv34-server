@@ -17,7 +17,7 @@ int g_idx[MAXPLAYERS+1];
 
 public Plugin myinfo = {
     name = "Rank System",
-    author = "Ali",
+    author = "Sefidan",
     description = "Overall + per-weapon-class ranking",
     version = "1.0",
 };
