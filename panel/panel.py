@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""CSS v34 Admin Panel v2 — status, players, maps, gamemodes, console, admins"""
-import socket, json, os, re, time, subprocess, threading
+"""CSS v34 Admin Panel v3 — status, players, maps, gamemodes, admins, bans, chat, stats"""
+import socket, json, os, re, time, subprocess, secrets
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingTCPServer
 from urllib.parse import parse_qs, urlparse
@@ -11,12 +11,19 @@ PANEL_PASS = RCON_PASS + 'web'
 PORT = 8081
 CWD = '/root/cssserver'
 ADMINS_INI = CWD + '/cstrike/addons/sourcemod/configs/admins_simple.ini'
-CONSOLE_LOG = CWD + '/console_history.log'
 MAPCYCLE = CWD + '/cstrike/mapcycle.txt'
 BANS_FILE = CWD + '/cstrike/banned_userids.cfg'
 GAGS_FILE = CWD + '/cstrike/addons/sourcemod/data/gags.txt'
 RANKS_FILE = CWD + '/cstrike/addons/sourcemod/data/ranks.txt'
 CHAT_FILE = CWD + '/cstrike/addons/sourcemod/data/chat_log.txt'
+MODE_FILE = CWD + '/current_mode.txt'
+
+def get_mode():
+    try:
+        m = open(MODE_FILE).read().strip()
+        return m if m in ('public','comp','dm','gungame','sniper','knifesmoke') else 'public'
+    except Exception:
+        return 'public'
 
 def get_bans():
     out = []
@@ -114,8 +121,13 @@ def get_admins():
         return []
 
 class Handler(BaseHTTPRequestHandler):
-    session = False
+    tokens = set()  # per-connection session tokens
     def log_message(self, *a): pass
+
+    def _authed(self):
+        cookie = self.headers.get('Cookie', '')
+        m = re.search(r'panel_session=([a-f0-9]+)', cookie)
+        return bool(m and m.group(1) in Handler.tokens)
 
     def _redir(self, loc='/'):
         self.send_response(302); self.send_header('Location', loc); self.end_headers()
@@ -147,12 +159,16 @@ class Handler(BaseHTTPRequestHandler):
         if path == '/login':
             self._page(LOGIN_HTML); return
         if path == '/logout':
-            Handler.session = False
+            cookie = self.headers.get('Cookie', '')
+            m = re.search(r'panel_session=([a-f0-9]+)', cookie)
+            if m: Handler.tokens.discard(m.group(1))
             self._redir('/login'); return
-        if not Handler.session:
+        if path in ('/', '/app') and not self._authed():
             self._redir('/login'); return
         if path in ('/', '/app'):
             self._page(APP_HTML); return
+        if not self._authed():
+            self.send_response(401); self.end_headers(); return
         if path == '/api/status':
             st = server_status()
             mp = re.search(r'map\s*:\s*(\S+)', st)
@@ -164,9 +180,7 @@ class Handler(BaseHTTPRequestHandler):
                 'count': int(pl.group(1)) if pl else 0,
                 'max': int(pl.group(2)) if pl else 0,
                 'server_active': 'players' in st,
-                'sm_dm': ('sm_dm 1' in st) or ('"sm_dm" "1"' in st),
-                'sniper': ('sm_sniper_mode 1' in st) or ('"sm_sniper_mode" "1"' in st),
-                'knifesmoke': ('sm_knife_smoke 1' in st) or ('"sm_knife_smoke" "1"' in st),
+                'mode': get_mode(),
             }); return
         if path == '/api/maps':
             self._json({'maps': get_maps()}); return
@@ -185,12 +199,19 @@ class Handler(BaseHTTPRequestHandler):
         d = self._body()
         if path == '/login':
             if d.get('pass', '') == PANEL_PASS:
-                Handler.session = True
-                self._redir('/')
+                tok = secrets.token_hex(16)
+                Handler.tokens.add(tok)
+                data = b'OK'
+                self.send_response(302)
+                self.send_header('Location', '/')
+                self.send_header('Set-Cookie', 'panel_session=%s; Path=/; HttpOnly; SameSite=Lax' % tok)
+                self.send_header('Content-Length', '2')
+                self.end_headers()
+                self.wfile.write(data)
             else:
                 self._redir('/login?e=1')
             return
-        if not Handler.session:
+        if not self._authed():
             self._redir('/login'); return
         if path == '/api/map':
             mp = re.sub(r'[^\w\-]', '', d.get('map', ''))
@@ -200,10 +221,14 @@ class Handler(BaseHTTPRequestHandler):
         if path == '/api/gm':
             mode = d.get('mode', 'public')
             if mode not in ('public', 'comp', 'dm', 'gungame', 'sniper', 'knifesmoke'):
-                self._json({'error': 'bad mode'}, 400); return
+                self._json({'error': 'bad mode'}); return
             if mode != 'gungame':
                 rcon_exec('sm plugins unload gungame')
             rcon_exec('exec gamemodes/%s.cfg' % mode)
+            try:
+                open(MODE_FILE, 'w').write(mode)
+            except Exception:
+                pass
             self._json({'ok': True, 'mode': mode}); return
         if path == '/api/kick':
             uid = re.sub(r'\D', '', d.get('uid', ''))

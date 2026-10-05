@@ -216,12 +216,21 @@ function tab(id,btn){document.querySelectorAll('main>div').forEach(function(d){d
 function J(u,o){return fetch(u,o).then(function(r){return r.json()})}
 function post(u,o){return J(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)})}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+var modeNames={public:'پابلیک',comp:'کامپتیو',dm:'دث‌مچ',gungame:'گان‌گیم',sniper:'اسنایپر',knifesmoke:'چاقو دودی'};
 function refresh(){J('/api/status').then(function(s){
  document.getElementById('st_players').textContent=s.count+' / '+s.max;
  document.getElementById('st_map').textContent=s.map;
  var act=s.server_active;
  document.getElementById('sdot').className='dot'+(act?'':' off');
  document.getElementById('sstat').textContent=act?'سرور آنلاین':'سرور آفلاین';
+ var mn=modeNames[s.mode]||s.mode||'?';
+ document.getElementById('st_gm').textContent=mn;
+ document.querySelectorAll('.gm-card').forEach(function(c){c.classList.remove('active')});
+ var cards=document.querySelectorAll('.gm-card');
+ var order=['public','comp','dm','gungame','sniper','knifesmoke'];
+ var mi=order.indexOf(s.mode); if(mi>-1&&cards[mi])cards[mi].classList.add('active');
+ s.players.forEach(function(p){var nm=p.name.toLowerCase();
+  adminNames.forEach(function(a){if(nm.indexOf(a)>-1&&!seenAdmins[a]){seenAdmins[a]=true;toast('👑 ادمین '+p.name+' آنلاین شد!')}});});
  var h='<table><tr><th>#</th><th>بازیکن</th><th></th></tr>';
  s.players.forEach(function(p,i){h+='<tr><td><span class=pnum>'+(i+1)+'</span></td><td><div class=pname>👤 '+esc(p.name)+'</div></td><td><div style="display:flex;gap:6px"><button class="btn btn-g" style="padding:4px 12px;font-size:11px" onclick="kick('+p.uid+')">کیک</button><button class="btn btn-r" style="padding:4px 12px;font-size:11px" onclick="ban('+p.uid+')">بن</button></div></td></tr>';});
  document.getElementById('plist').innerHTML=s.players.length?h+'</table>':'<div class=hint style="text-align:center;padding:18px">فعلاً بازیکنی آنلاین نیست</div>';
@@ -244,7 +253,7 @@ function loadAdm(){J('/api/admins').then(function(a){var h='<table><tr><th>اد�
  document.getElementById('admlist').innerHTML=h+'</table>';});}
 function addadm(){var a=document.getElementById('aname').value.trim();var f=document.getElementById('aflags').value.trim()||'99:z';
  if(!a)return;post('/api/admin/add',{auth:a,flags:f}).then(function(){document.getElementById('aname').value='';toast('ادمین اضافه شد');loadAdm()})}
-function deladm(x){if(!confirm('حذف شود؟'))return;post('/api/admin/del',{auth:x}).then(function(){toast('ادمین حذف شد');loadAdm})}
+function deladm(x){if(!confirm('حذف شود؟'))return;post('/api/admin/del',{auth:x}).then(function(){toast('ادمین حذف شد');loadAdm()})}
 var adminNames=[], seenAdmins={};
 function loadBans(){J('/api/bans').then(function(b){var h='<table><tr><th>نوع</th><th>شناسه</th><th>مدت</th><th>دلیل</th><th></th></tr>';
  b.bans.forEach(function(x){var dur=x.perm?'دائمی':(x.minutes+' دقیقه');
@@ -260,9 +269,5 @@ function loadStats(){J('/api/stats').then(function(s){var h='<table><tr><th>#</t
   h+='<tr><td>'+m+(i+1)+'</td><td>'+esc(r.name)+'</td><td style="color:#a3e635;font-weight:700">'+r.kills+'</td><td>'+r.deaths+'</td><td>'+kd+'</td><td>'+r.hs+'</td><td>'+r.sniper+'</td></tr>';});
  document.getElementById('statsbox').innerHTML=s.rows.length?h+'</table>':'<div class=hint style="text-align:center;padding:16px">هنوز آماری ثبت نشده — بازی کنید!</div>';});}
 J('/api/admins').then(function(a){a.admins.forEach(function(x){var nm=x.split('"')[1]||x;if(nm&&!nm.startsWith('//'))adminNames.push(nm.toLowerCase())})});
-var _oldRefresh=refresh;
-refresh=function(){_oldRefresh();J('/api/status').then(function(s){s.players.forEach(function(p){
- var nm=p.name.toLowerCase();
- adminNames.forEach(function(a){if(nm.indexOf(a.toLowerCase())>-1&&!seenAdmins[a]){seenAdmins[a]=true;toast('👑 ادمین '+p.name+' آنلاین شد!')}});});})};
 refresh();setInterval(refresh,5000);loadMaps();loadAdm();
 </script></body></html>

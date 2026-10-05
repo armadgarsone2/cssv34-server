@@ -27,12 +27,10 @@ def read(path):
     except Exception: return ''
 
 def best_url():
+    # plain HTTP only — the v34 engine cannot use TLS, https fallback would break downloads
     m = re.findall(r'listening at bore\.pub:(\d+)', read(BORE_LOG))
     if m:
         return 'http://bore.pub:%s/' % m[-1]
-    m = re.findall(r'https://[a-z0-9\-]+\.trycloudflare\.com', read(CF_LOG))
-    if m:
-        return m[-1] + '/'
     return ''
 
 def set_cfg(url):
