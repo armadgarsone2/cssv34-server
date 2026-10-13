@@ -6,10 +6,23 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingTCPServer
 from urllib.parse import parse_qs, urlparse
 
-RCON_PASS = open('/root/cssserver/rcon_pass.txt').read().split('=')[1].strip()
-PANEL_PASS = RCON_PASS + 'web'
-PORT = 8081
-CWD = '/root/cssserver'
+V34 = '/root/cssv34/csds-v34-2009-08-26'
+RCON_HOST = '127.0.0.1'
+RCON_PORT = 27015
+def _load_rcon():
+    try:
+        for ln in open(V34 + '/cstrike/cfg/server.cfg'):
+            m = re.search(r'rcon_password\s+"([^"]+)"', ln)
+            if m:
+                return m.group(1)
+    except Exception:
+        pass
+    return os.environ.get('RCON_PASS', '')
+RCON_PASS = _load_rcon()
+PANEL_PASS = os.environ.get('PANEL_PASS', RCON_PASS + 'web')
+PORT = int(os.environ.get('PANEL_PORT', 8081))
+CWD = V34 + '/cstrike'
+RCON_BIND = os.environ.get('PANEL_BIND', '0.0.0.0')
 ADMINS_INI = CWD + '/cstrike/addons/sourcemod/configs/admins_simple.ini'
 MAPCYCLE = CWD + '/cstrike/mapcycle.txt'
 BANS_FILE = CWD + '/cstrike/banned_userids.cfg'
@@ -81,32 +94,57 @@ def get_stats():
     rows.sort(key=lambda r: r['kills'], reverse=True)
     return rows[:50]
 
+def _rcon_packet(i, t, body):
+    import struct as _s
+    return _s.pack("<iii", len(body) + 10, i, t) + body + b"\x00\x00"
+
+def _rcon_recv(sk):
+    import struct as _s
+    hdr = sk.recv(4)
+    if len(hdr) < 4:
+        return None
+    size = _s.unpack("<i", hdr)[0]
+    data = b""
+    while len(data) < size:
+        chunk = sk.recv(size - len(data))
+        if not chunk:
+            break
+        data += chunk
+    return data
+
 def rcon_exec(cmd, timeout=8):
-    """Send console command via PTY supervisor on 127.0.0.1:27016"""
+    """Send a console command via Source RCON (TCP 27015) and return reply."""
     try:
-        s = socket.socket()
-        s.settimeout(timeout)
-        s.connect(('127.0.0.1', 27016))
-        s.sendall(cmd.encode())
-        out = b''
-        try:
-            while True:
-                chunk = s.recv(8192)
-                if not chunk:
-                    break
-                out += chunk
-        except socket.timeout:
-            pass
-        s.close()
-        return out.decode('utf-8', 'ignore')
+        sk = socket.socket()
+        sk.settimeout(timeout)
+        sk.connect((RCON_HOST, RCON_PORT))
+        # auth: server replies type 0 then type 2
+        sk.sendall(_rcon_packet(1, 3, RCON_PASS.encode()))
+        ok = False
+        for _ in range(2):
+            r = _rcon_recv(sk)
+            if r is None or len(r) < 8:
+                break
+            _aid, atype = __import__("struct").unpack("<ii", r[:8])
+            if atype == 2:
+                ok = True
+        if not ok:
+            sk.close()
+            return "ERROR: RCON auth failed"
+        sk.sendall(_rcon_packet(2, 2, cmd.encode()))
+        r = _rcon_recv(sk)
+        sk.close()
+        if not r:
+            return ""
+        return r[8:].split(b"\x00")[0].decode("utf-8", "ignore")
     except Exception as e:
-        return 'ERROR: %s' % e
+        return "ERROR: %s" % e
 
 def server_status():
     return rcon_exec('status') or '(no response)'
 
-LOGIN_HTML = open(CWD + '/web/login.html').read()
-APP_HTML = open(CWD + '/web/app.html').read()
+LOGIN_HTML = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'web/login.html')).read()
+APP_HTML = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'web/app.html')).read()
 
 def parse_players(st):
     players = []
@@ -281,7 +319,7 @@ class Handler(BaseHTTPRequestHandler):
                 open(GAGS_FILE, 'w').writelines(out)
             self._json({'ok': True}); return
         if path == '/api/restart':
-            subprocess.Popen(['systemctl', 'restart', 'css34'])
+            subprocess.Popen(['pkill', '-f', 'srcds_i486'])
             self._json({'ok': True}); return
         self.send_response(404); self.end_headers()
 
