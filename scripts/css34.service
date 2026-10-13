@@ -1,0 +1,29 @@
+# css34.service — سرویس systemd برای سرور CSS v34 بدون استیم
+#
+# نصب:
+#   cp css34.service /etc/systemd/system/
+#   # مسیرها رو توی فایل تنظیم کن
+#   systemctl daemon-reload
+#   systemctl enable --now css34
+#
+# لاگ: journalctl -u css34 -f
+
+[Unit]
+Description=CSS v34 No-Steam Dedicated Server
+After=network.target
+
+[Service]
+Type=simple
+# مسیر ریشهٔ سرور
+WorkingDirectory=/root/cssv34/csds-v34-2009-08-26
+# شیم no-steam + memfix با LD_PRELOAD
+Environment=LD_PRELOAD=/root/cssv34/nosteam_shim.so:/root/cssv34/memfix.so
+Environment=LD_LIBRARY_PATH=/root/cssv34/csds-v34-2009-08-26:/root/cssv34/csds-v34-2009-08-26/bin:/root/cssv34/csds-v34-2009-08-26/platform/bin
+ExecStart=/root/cssv34/csds-v34-2009-08-26/srcds_i486 -game cstrike -console -usercon -nobreakpad -insecure +ip 0.0.0.0 +port 27015 +maxplayers 16 +map de_dust2
+Restart=on-failure
+RestartSec=5
+# محدودیت رم (سرور ۲ گیگ داره)
+MemoryMax=1400M
+
+[Install]
+WantedBy=multi-user.target
