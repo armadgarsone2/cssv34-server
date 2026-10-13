@@ -60,6 +60,11 @@ apt update && apt install -y gcc-multilib iptables
 > ⚠️ **خط قرمز:** دانلود فایل بازی Valve توسط دستیار از اینترنت ممنوعه.
 > لینک مستقیمش رو **خودِ کاربر** میده.
 
+**لینک دانلود سرور v34 (اختصاصی، نیازی به دانلود توسط دستیار نیست):**
+https://files.hl2go.com/downloads/css-v34-dedicated-server-and-tools/
+
+فایل مورد نیاز: `csds-v34-2009-08-26.zip` (حدود ۵۸۶ مگ).
+
 ### ۲. جلوگیری از هنگ (iptables)
 
 ```bash
