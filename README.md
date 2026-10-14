@@ -260,30 +260,6 @@ sv_log_onefile 0
 
 ---
 
-## 🔄 Automated Backups (Every 6 Hours)
-
-Cron job `hermes-full-backup-6h` runs `/root/.hermes/scripts/lean_backup_push.py`:
-
-1. Creates tarball of **essential files only** (excludes maps/sounds/models/cache)
-2. Splits into 40MB parts if >40MB (GitHub 100MB limit)
-3. Force-pushes to `armadgarsone2/hermes-backup` repo
-4. Keeps last 12 backups via git history
-
-**Backup contents:**
-- Hermes: skills, memories, config, scripts
-- CSS v34: patched binaries, `server.cfg`, SourceMod configs/plugins, Metamod
-- cssv34-server: fix scripts, systemd unit
-
-**Restore:**
-```bash
-cd /root/hermes-backup
-cat backup_part_* > lean_backup.tar.gz
-tar -xzf lean_backup.tar.gz -C /
-systemctl restart css34
-```
-
----
-
 ## 🐛 Troubleshooting
 
 | Symptom | Cause | Fix |
